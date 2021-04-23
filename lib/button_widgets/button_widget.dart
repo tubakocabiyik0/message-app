@@ -2,21 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ButtonWidgets extends StatelessWidget {
-  String _buttonText;
-  Function _pressed;
-  Color _color;
+  String buttonText;
+  Function pressed;
+  Color color;
   Widget icon;
 
-  ButtonWidgets(this._buttonText, this._pressed, this._color, this.icon);
+  ButtonWidgets(
+      {@required this.buttonText,
+      @required this.pressed,
+      @required this.color,
+      @required this.icon});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 12,left: 12,top: 10),
+      padding: const EdgeInsets.only(right: 12, left: 12, top: 10),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(6))),
-        onPressed: _pressed,
+        onPressed: pressed,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -24,12 +28,12 @@ class ButtonWidgets extends StatelessWidget {
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(right: 100),
-                child: Text(_buttonText),
+                child: Text(buttonText),
               ),
             ),
           ],
         ),
-        color: _color,
+        color: color,
         elevation: 0,
       ),
     );

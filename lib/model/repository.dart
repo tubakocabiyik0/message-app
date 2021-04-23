@@ -37,4 +37,13 @@ class Repository implements AuthBase {
       return _authWithFirebaseAuth.signOut();
     }
   }
+
+  @override
+  Future<Users> AuthWithGoogle() {
+    if(_appMode==AppMode.DEBUG){
+      return null;
+    }else if(_appMode==AppMode.REALESE){
+      return _authWithFirebaseAuth.AuthWithGoogle();
+    }
+  }
 }

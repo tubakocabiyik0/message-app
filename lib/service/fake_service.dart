@@ -18,4 +18,10 @@ class FakeService implements AuthBase {
   Future<bool> signOut() {
     return Future.value(true);
   }
+
+  @override
+  Future<Users> AuthWithGoogle() {
+    // TODO: implement AuthWithGoogle
+    throw UnimplementedError();
+  }
 }

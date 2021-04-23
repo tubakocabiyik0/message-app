@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_message/model/user.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:io';
 import 'auth_base.dart';
 
 class AuthWithFirebaseAuth implements AuthBase {
@@ -28,14 +29,33 @@ class AuthWithFirebaseAuth implements AuthBase {
   }
 
   Users userFromFirebase(User user) {
-    if(user=null)
-      return null;
-      return Users(UserId: user.uid);
-    }
+    if (user = null) return null;
+    return Users(UserId: user.uid);
+  }
 
   @override
   Future<Users> CurrentUser() async {
     User user = await _firebaseAuth.currentUser;
     return Future.value(Users(UserId: user.uid));
+  }
+
+  @override
+  Future<Users> AuthWithGoogle() async {
+    try {
+      GoogleSignIn _googleSignIn = GoogleSignIn();
+      GoogleSignInAccount _googleUser = await _googleSignIn.signIn();
+      if (_googleUser != null) {
+        GoogleSignInAuthentication _googleSignInAuthentication =
+            await _googleUser.authentication;
+
+        UserCredential _userCredential = await _firebaseAuth
+            .signInWithCredential(GoogleAuthProvider.credential(
+                idToken: _googleSignInAuthentication.idToken,
+                accessToken: _googleSignInAuthentication.accessToken));
+        return (Users(UserId: _userCredential.user.uid));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

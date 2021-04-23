@@ -10,4 +10,5 @@ void setUpLocator(){
   locator.registerLazySingleton(() => AuthWithFirebaseAuth());
   locator.registerLazySingleton(() => FakeService());
   locator.registerLazySingleton(() => Repository());
+
     }

@@ -26,10 +26,10 @@ class SignInPage extends StatelessWidget {
               "Sign in",
               style: TextStyle(fontSize: 35, fontWeight: FontWeight.w500),
             )),
-            ButtonWidgets("Sign with email & password", signWithMail,
-                Colors.redAccent.shade100, Icon(Icons.mail_outline_sharp)),
-            ButtonWidgets("Sign with google account", signWithGoogle,
-                Colors.white, Icon(Icons.create)),
+            ButtonWidgets(buttonText: "Sign with email & password", pressed:signWithMail,
+               color: Colors.redAccent.shade100,icon:Icon(Icons.mail_outline_sharp)),
+            ButtonWidgets(buttonText:"Sign with google account",pressed:()=> signWithGoogle(context),
+                 color:Colors.white, icon: Icon(Icons.create),),
       Padding(
         padding: const EdgeInsets.only(right: 12,left: 12,top: 10),
         child: RaisedButton(
@@ -64,7 +64,11 @@ class SignInPage extends StatelessWidget {
     //Navigator.push( context,MaterialPageRoute(builder:(context)=>SigninWithMail()));
   }
 
-  signWithGoogle() {}
+  signWithGoogle(BuildContext context)async {
+    final authProvider= Provider.of<AuthProvider>(context,listen:false);
+    await authProvider.AuthWithGoogle();
+
+  }
 
 
 }

@@ -7,4 +7,6 @@ abstract class AuthBase {
   Future<Users> AuthAnonim() {}
 
   Future<bool> signOut() {}
+
+  Future<Users> AuthWithGoogle() {}
 }

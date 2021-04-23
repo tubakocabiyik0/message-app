@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_message/model/repository.dart';
 import 'package:flutter_message/model/user.dart';
 import 'package:flutter_message/service/auth_base.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../locator.dart';
 
@@ -57,10 +58,22 @@ class AuthProvider with ChangeNotifier implements AuthBase {
   Future<bool> signOut() async {
     try {
       viewState = ViewState.Busy;
+      final _googleSign= GoogleSignIn();
+      await _googleSign.signOut();
       await _authRepository.signOut();
       _users = null;
-    } catch (e) {
-    } finally {
+    } catch (e) {} finally {
+      viewState = ViewState.Idle;
+    }
+  }
+
+  @override
+  Future<Users> AuthWithGoogle() async {
+    try {
+      viewState = ViewState.Busy;
+      _users = await _authRepository.AuthWithGoogle();
+      return _users;
+    } catch (e) {} finally {
       viewState = ViewState.Idle;
     }
   }
