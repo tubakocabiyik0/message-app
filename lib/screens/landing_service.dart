@@ -1,48 +1,31 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_message/model/user.dart';
 import 'package:flutter_message/screens/home_page.dart';
+
 import 'package:flutter_message/screens/signin_page.dart';
-import 'package:flutter_message/service/auth_base.dart';
+import 'package:flutter_message/viewmodel/auth_provider.dart';
+import 'package:provider/provider.dart';
 
-class LandingPage extends StatefulWidget {
-  AuthBase authBase;
-
-  LandingPage(this.authBase);
-
-  @override
-  _LandingPageState createState() => _LandingPageState();
-}
-
-class _LandingPageState extends State<LandingPage> {
-
-  Users users;
-
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    checkUser();
-  }
-
+class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if(users==null){
-      return SignInPage(authBase: widget.authBase);
-    }
-    else{
-     return HomePage(widget.authBase,users);
-    }
+    final authProvider = Provider.of<AuthProvider>(context);
 
+    if (authProvider.viewState == ViewState.Idle) {
+      if (authProvider.users == null) {
+        return SignInPage();
+      } else if(authProvider.users !=null) {
+         print(authProvider.CurrentUser());
+         //return Text("homepage dönecek");
+        return HomePage(authProvider.users);
+      }
+    } else if (authProvider.viewState == ViewState.Busy) {
+      return Center(
+        child:CircularProgressIndicator(),
+      );
+    }
 
   }
 
-  Future<Users> checkUser() async {
-    users = await widget.authBase.CurrentUser();
-    if (users != null) {
-      return users;
-    } else {
-      return users;
-    }
-  }
 }

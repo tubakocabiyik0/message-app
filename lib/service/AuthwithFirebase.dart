@@ -20,17 +20,22 @@ class AuthWithFirebaseAuth implements AuthBase {
   Future<Users> AuthAnonim() async {
     try {
       UserCredential userCredential = await _firebaseAuth.signInAnonymously();
-      return userFromFirebase(userCredential.user.uid);
-    } catch (e) {}
+
+      return Future.value(Users(UserId: userCredential.user.uid));
+    } catch (e) {
+      return null;
+    }
   }
 
-  Users userFromFirebase(String Uid) {
-    return Users(Uid);
-  }
+  Users userFromFirebase(User user) {
+    if(user=null)
+      return null;
+      return Users(UserId: user.uid);
+    }
 
   @override
   Future<Users> CurrentUser() async {
     User user = await _firebaseAuth.currentUser;
-    return userFromFirebase(user.uid);
+    return Future.value(Users(UserId: user.uid));
   }
 }

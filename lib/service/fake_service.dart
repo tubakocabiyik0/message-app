@@ -6,12 +6,12 @@ import 'auth_base.dart';
 class FakeService implements AuthBase {
   @override
   Future<Users> AuthAnonim() {
-    return Future.value(Users("1231231231"));
+    return Future.value(Users(UserId:"1231231231"));
   }
 
   @override
   Future<Users> CurrentUser() {
-    return Future.value(Users("123123123"));
+    return Future.value(Users(UserId:"123123123"));
   }
 
   @override

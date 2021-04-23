@@ -1,13 +1,10 @@
 
+import 'package:flutter/cupertino.dart';
+
 class Users{
 
-  String _UserId;
+ // ignore: non_constant_identifier_names
+ final String UserId;
 
-  String get UserId => _UserId;
-
-  set UserId(String value) {
-    _UserId = value;
-  }
-
-  Users(this._UserId);
+  Users({@required this.UserId});
 }

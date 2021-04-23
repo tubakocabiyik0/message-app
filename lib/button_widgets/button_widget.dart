@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class ButtonWidgets extends StatelessWidget {
   String _buttonText;
-  VoidCallback _pressed;
+  Function _pressed;
   Color _color;
   Widget icon;
 
