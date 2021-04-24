@@ -46,4 +46,22 @@ class Repository implements AuthBase {
       return _authWithFirebaseAuth.AuthWithGoogle();
     }
   }
+
+  @override
+  Future<Users> AuthWithMail(String mail, String pass) {
+    if(_appMode==AppMode.DEBUG){
+      return null;
+    }else if(_appMode==AppMode.REALESE){
+      return _authWithFirebaseAuth.AuthWithMail(mail, pass);
+    }  
+  }
+
+  @override
+  Future<Users> LoginWithMail(String mail, String pass) {
+    if(_appMode==AppMode.DEBUG){
+      return null;
+    }else if(_appMode==AppMode.REALESE){
+      return _authWithFirebaseAuth.LoginWithMail(mail, pass);
+    }
+  }
 }

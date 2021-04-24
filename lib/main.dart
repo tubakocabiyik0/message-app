@@ -21,15 +21,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-      MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Message App',
-        theme: ThemeData(primaryColor: Colors.deepPurpleAccent),
-        home:  ChangeNotifierProvider(
-            create: (context)=>AuthProvider(),
-            child: LandingPage()),
+      ChangeNotifierProvider(
+          create: (context)=>AuthProvider(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Message App',
+          theme: ThemeData(primaryColor: Colors.deepPurpleAccent),
+          home: LandingPage()
 
-    );
+    ),
+      );
   }
 
 

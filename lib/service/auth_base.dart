@@ -9,4 +9,7 @@ abstract class AuthBase {
   Future<bool> signOut() {}
 
   Future<Users> AuthWithGoogle() {}
+
+  Future<Users> AuthWithMail(String mail,String pass) {}
+  Future<Users> LoginWithMail(String mail,String pass) {}
 }

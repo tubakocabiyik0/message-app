@@ -24,4 +24,16 @@ class FakeService implements AuthBase {
     // TODO: implement AuthWithGoogle
     throw UnimplementedError();
   }
+
+  @override
+  Future<Users> AuthWithMail(String mail, String pass) {
+    // TODO: implement AuthWithMail
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Users> LoginWithMail(String mail, String pass) {
+    // TODO: implement LoginWithMail
+    throw UnimplementedError();
+  }
 }

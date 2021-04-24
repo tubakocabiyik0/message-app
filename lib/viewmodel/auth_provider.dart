@@ -12,6 +12,8 @@ class AuthProvider with ChangeNotifier implements AuthBase {
   final _authRepository = locator<Repository>();
   ViewState _viewState = ViewState.Idle;
   Users _users;
+  String mailError;
+  String passwordError;
 
   Users get users => _users;
 
@@ -58,7 +60,7 @@ class AuthProvider with ChangeNotifier implements AuthBase {
   Future<bool> signOut() async {
     try {
       viewState = ViewState.Busy;
-      final _googleSign= GoogleSignIn();
+      final _googleSign = GoogleSignIn();
       await _googleSign.signOut();
       await _authRepository.signOut();
       _users = null;
@@ -75,6 +77,53 @@ class AuthProvider with ChangeNotifier implements AuthBase {
       return _users;
     } catch (e) {} finally {
       viewState = ViewState.Idle;
+    }
+  }
+
+  @override
+  Future<Users> AuthWithMail(String mail, String pass) async {
+    try {
+      if (checkUserandPass(mail, pass) == true) {
+        viewState = ViewState.Busy;
+        _users = await _authRepository.AuthWithMail(mail, pass);
+        return _users;
+      } else {
+        return null;
+      }
+    } catch (e) {} finally {
+      viewState = ViewState.Idle;
+    }
+  }
+
+  @override
+  Future<Users> LoginWithMail(String mail, String pass) async {
+    try {
+      if (checkUserandPass(mail, pass) == true) {
+        viewState = ViewState.Busy;
+        _users = await _authRepository.LoginWithMail(mail, pass);
+        return _users;
+      } else {
+        return null;
+      }
+    } catch (e) {} finally {
+      viewState = ViewState.Idle;
+    }
+  }
+
+  bool checkUserandPass(String mail, String pass) {
+    if (mail.contains('@') && pass.length >= 6) {
+      return true;
+    } else {
+      if (!mail.contains('@')) {
+        mailError = "Mail format isn't correct";
+      }else{
+        mailError=null;
+      }
+      if (pass.length <= 6) {
+        passwordError = "Password can't be less 6 characters";
+      }else{
+        passwordError=null;
+      }
     }
   }
 }
