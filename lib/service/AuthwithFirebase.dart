@@ -28,10 +28,10 @@ class AuthWithFirebaseAuth implements AuthBase {
     }
   }
 
-  Users userFromFirebase(User user) {
+  /*Users userFromFirebase(User user) {
     if (user = null) return null;
     return Users(UserId: user.uid);
-  }
+  }*/
 
   @override
   Future<Users> CurrentUser() async {
@@ -52,7 +52,7 @@ class AuthWithFirebaseAuth implements AuthBase {
             .signInWithCredential(GoogleAuthProvider.credential(
                 idToken: _googleSignInAuthentication.idToken,
                 accessToken: _googleSignInAuthentication.accessToken));
-        return (Users(UserId: _userCredential.user.uid));
+        return (Users(UserId: _userCredential.user.uid,email: _userCredential.user.email));
       }
     } catch (e) {
       print(e.toString());
@@ -64,7 +64,7 @@ class AuthWithFirebaseAuth implements AuthBase {
     try {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: mail, password: pass);
-      return (Users(UserId: userCredential.user.uid));
+      return (Users(UserId: userCredential.user.uid,email: userCredential.user.email));
     } catch (e) {
       print(e.toString());
     }
@@ -75,7 +75,7 @@ class AuthWithFirebaseAuth implements AuthBase {
     try {
       UserCredential userCredential = await _firebaseAuth
           .signInWithEmailAndPassword(email: mail, password: pass);
-      return (Users(UserId: userCredential.user.uid));
+      return (Users(UserId: userCredential.user.uid,email: userCredential.user.email));
     } catch (e) {
       print(e.toString());
     }
