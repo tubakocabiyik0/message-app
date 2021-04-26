@@ -44,13 +44,13 @@ class Repository implements AuthBase, DbBase {
   }
 
   @override
-  Future<Users> AuthWithGoogle()async {
+  Future<Users> AuthWithGoogle() async {
     if (_appMode == AppMode.DEBUG) {
       return null;
     } else if (_appMode == AppMode.REALESE) {
-      Users _user= await _authWithFirebaseAuth.AuthWithGoogle();
+      Users _user = await _authWithFirebaseAuth.AuthWithGoogle();
       _fireStoreAdd.saveUSer(_user);
-      return _user;
+      return await _fireStoreAdd.takeUser(_user.UserId);
     }
   }
 
@@ -61,7 +61,7 @@ class Repository implements AuthBase, DbBase {
     } else if (_appMode == AppMode.REALESE) {
       Users _users = await _authWithFirebaseAuth.AuthWithMail(mail, pass);
       _fireStoreAdd.saveUSer(_users);
-      return _users;
+      return await _fireStoreAdd.takeUser(_users.UserId);
     }
   }
 
@@ -71,7 +71,7 @@ class Repository implements AuthBase, DbBase {
       return null;
     } else if (_appMode == AppMode.REALESE) {
       Users _user = await _authWithFirebaseAuth.LoginWithMail(mail, pass);
-      return _user;
+      return await _fireStoreAdd.takeUser(_user.UserId);
     }
   }
 
@@ -81,6 +81,15 @@ class Repository implements AuthBase, DbBase {
       return null;
     } else if (_appMode == AppMode.REALESE) {
       return _fireStoreAdd.saveUSer(user);
+    }
+  }
+
+  @override
+  Future<Users> takeUser(String userID) {
+    if (_appMode == AppMode.DEBUG) {
+      return null;
+    } else if (_appMode == AppMode.REALESE) {
+      return _fireStoreAdd.takeUser(userID);
     }
   }
 }

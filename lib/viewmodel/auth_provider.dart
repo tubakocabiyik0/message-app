@@ -52,8 +52,6 @@ class AuthProvider with ChangeNotifier implements AuthBase {
     } finally {
       viewState = ViewState.Idle;
     }
-
-    return _users;
   }
 
   @override
@@ -75,38 +73,38 @@ class AuthProvider with ChangeNotifier implements AuthBase {
       viewState = ViewState.Busy;
       _users = await _authRepository.AuthWithGoogle();
       return _users;
-    } catch (e) {} finally {
+    } finally {
       viewState = ViewState.Idle;
     }
   }
 
   @override
   Future<Users> AuthWithMail(String mail, String pass) async {
-    try {
-      if (checkUserandPass(mail, pass) == true) {
+    if (checkUserandPass(mail, pass) == true) {
+      try {
         viewState = ViewState.Busy;
         _users = await _authRepository.AuthWithMail(mail, pass);
         return _users;
-      } else {
-        return null;
+      } finally {
+        viewState = ViewState.Idle;
       }
-    } catch (e) {} finally {
-      viewState = ViewState.Idle;
+    } else {
+      return null;
     }
   }
 
   @override
   Future<Users> LoginWithMail(String mail, String pass) async {
-    try {
-      if (checkUserandPass(mail, pass) == true) {
+    if (checkUserandPass(mail, pass) == true) {
+      try {
         viewState = ViewState.Busy;
         _users = await _authRepository.LoginWithMail(mail, pass);
         return _users;
-      } else {
-        return null;
+      } finally {
+        viewState = ViewState.Idle;
       }
-    } catch (e) {} finally {
-      viewState = ViewState.Idle;
+    } else {
+      return null;
     }
   }
 
@@ -116,13 +114,13 @@ class AuthProvider with ChangeNotifier implements AuthBase {
     } else {
       if (!mail.contains('@')) {
         mailError = "Mail format isn't correct";
-      }else{
-        mailError=null;
+      } else {
+        mailError = null;
       }
       if (pass.length <= 6) {
         passwordError = "Password can't be less 6 characters";
-      }else{
-        passwordError=null;
+      } else {
+        passwordError = null;
       }
     }
   }

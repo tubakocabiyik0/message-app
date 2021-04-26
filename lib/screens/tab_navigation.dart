@@ -6,11 +6,11 @@ import 'package:flutter_message/screens/home_page.dart';
 
 class MyTabNavigation extends StatelessWidget {
 
-  const MyTabNavigation({Key key, this.onselectedTab, this.currentTab, this.getPage}) : super(key: key);
+  const MyTabNavigation({Key key, this.onselectedTab, this.currentTab, this.getPage, this.getGlobalKey}) : super(key: key);
   final ValueChanged<TabItems> onselectedTab;
   final TabItems currentTab;
   final Map<TabItems,Widget> getPage;
-
+  final Map<TabItems,GlobalKey<NavigatorState>> getGlobalKey;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,10 @@ class MyTabNavigation extends StatelessWidget {
     onTap: (index)=>onselectedTab(TabItems.values[index]),
     ), tabBuilder: (context,index){
       final selectedPage = TabItems.values[index];
-          return CupertinoTabView(builder: (context)=>getPage[selectedPage]);
+
+          return CupertinoTabView(
+              navigatorKey: getGlobalKey[selectedPage],
+              builder: (context)=>getPage[selectedPage]);
     });
   }
 

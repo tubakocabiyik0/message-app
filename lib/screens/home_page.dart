@@ -23,6 +23,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TabItems _currentTab = TabItems.users;
 
+
+
+  Map<TabItems, GlobalKey<NavigatorState>> _globalKeys= {
+
+  TabItems.users: GlobalKey<NavigatorState>(),
+  TabItems.profile: GlobalKey<NavigatorState>(),
+
+};
   Map<TabItems, Widget> _currentPage() {
     return {
       TabItems.users: AllUsers(),
@@ -34,14 +42,25 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: MyTabNavigation(
-          getPage: _currentPage(),
-          onselectedTab: (selectedTab) {
-            setState(() {
-              _currentTab = selectedTab;
-            });
-          },
-          currentTab: _currentTab),
+      body: WillPopScope(
+        onWillPop: () async => !await _globalKeys[_currentTab].currentState.maybePop(),
+        child: MyTabNavigation(
+            getGlobalKey: _globalKeys,
+            getPage: _currentPage(),
+            onselectedTab: (selectedTab) {
+              if(selectedTab==_currentTab){
+                _globalKeys[_currentTab].currentState.popUntil((route) => route.isFirst);
+              }else{
+                setState(() {
+                  _currentTab = selectedTab;
+                });
+              }
+
+
+
+            },
+            currentTab: _currentTab),
+      ),
     );
   }
 

@@ -41,7 +41,6 @@ class AuthWithFirebaseAuth implements AuthBase {
 
   @override
   Future<Users> AuthWithGoogle() async {
-    try {
       GoogleSignIn _googleSignIn = GoogleSignIn();
       GoogleSignInAccount _googleUser = await _googleSignIn.signIn();
       if (_googleUser != null) {
@@ -54,30 +53,21 @@ class AuthWithFirebaseAuth implements AuthBase {
                 accessToken: _googleSignInAuthentication.accessToken));
         return (Users(UserId: _userCredential.user.uid,email: _userCredential.user.email));
       }
-    } catch (e) {
-      print(e.toString());
-    }
   }
 
   @override
   Future<Users> AuthWithMail(String mail, String pass) async {
-    try {
-      UserCredential userCredential = await _firebaseAuth
+         UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: mail, password: pass);
       return (Users(UserId: userCredential.user.uid,email: userCredential.user.email));
-    } catch (e) {
-      print(e.toString());
-    }
+
   }
 
   @override
   Future<Users> LoginWithMail(String mail, String pass) async {
-    try {
-      UserCredential userCredential = await _firebaseAuth
+         UserCredential userCredential = await _firebaseAuth
           .signInWithEmailAndPassword(email: mail, password: pass);
       return (Users(UserId: userCredential.user.uid,email: userCredential.user.email));
-    } catch (e) {
-      print(e.toString());
-    }
+
   }
 }

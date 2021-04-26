@@ -69,13 +69,13 @@ class SignInPage extends StatelessWidget {
 
   signWithMail(BuildContext context) {
     Navigator.push(
-        context, MaterialPageRoute(
-
-        builder: (context) => SigninWithMail()));
+        context, MaterialPageRoute(builder: (context) => SigninWithMail()));
   }
 
   signWithGoogle(BuildContext context) async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    await authProvider.AuthWithGoogle();
+    try {
+      await authProvider.AuthWithGoogle();
+    } catch (e) {}
   }
 }
