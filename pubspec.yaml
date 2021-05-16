@@ -35,7 +35,9 @@ dependencies:
   provider: ^4.3.2+2
   get_it: ^1.0.3+2
   google_sign_in: ^4.0.6
-  image_picker: ^0.6.1+4
+  image_picker: ^0.6.7+12
+  path_provider: "^1.6.24"
+  firebase_storage: ^4.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

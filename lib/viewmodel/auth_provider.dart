@@ -1,14 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_message/model/repository.dart';
 import 'package:flutter_message/model/user.dart';
 import 'package:flutter_message/service/auth_base.dart';
+import 'package:flutter_message/service/storage_base.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../locator.dart';
 
 enum ViewState { Idle, Busy }
 
-class AuthProvider with ChangeNotifier implements AuthBase {
+class AuthProvider with ChangeNotifier implements AuthBase, StorageBase {
   final _authRepository = locator<Repository>();
   ViewState _viewState = ViewState.Idle;
   Users _users;
@@ -125,11 +129,18 @@ class AuthProvider with ChangeNotifier implements AuthBase {
     }
   }
 
-  Future<bool> updateUsername(String userId,String username) async {
-
-
-       return await _authRepository.updateUserName(username, userId);
-
+  Future<bool> updateUsername(String userId, String username) async {
+    return await _authRepository.updateUserName(username, userId);
   }
 
+  @override
+  Future<String> savePhoto(
+      String userId, String fileType, PickedFile photo) async {
+    return await _authRepository.savePhoto(userId, fileType, photo);
+  }
+
+  Future<bool> updatePhoto(String userId, String url) async {
+     await _authRepository.updatePhoto(url, userId);
+     return true;
+  }
 }

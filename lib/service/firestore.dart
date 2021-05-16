@@ -48,4 +48,12 @@ class FireStoreAdd implements DbBase {
       return true;
     }
   }
+
+  @override
+  Future<bool> updatePhoto(String photoUrl,String userId) async{
+    await _firebaseFirestore.collection("users").doc(userId).update({'profilPhoto': photoUrl});
+
+  }
+
+
 }

@@ -1,20 +1,25 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
 import 'package:flutter_message/locator.dart';
 import 'package:flutter_message/model/user.dart';
 import 'package:flutter_message/service/AuthwithFirebase.dart';
 import 'package:flutter_message/service/auth_base.dart';
 import 'package:flutter_message/service/db_base.dart';
 import 'package:flutter_message/service/fake_service.dart';
+import 'package:flutter_message/service/firebaseStorage.dart';
 import 'package:flutter_message/service/firestore.dart';
+import 'package:flutter_message/service/storage_base.dart';
+import 'package:image_picker/image_picker.dart';
 
 enum AppMode { DEBUG, REALESE }
 
-class Repository implements AuthBase, DbBase {
+class Repository implements AuthBase, DbBase , StorageBase {
   AppMode _appMode = AppMode.REALESE;
   AuthWithFirebaseAuth _authWithFirebaseAuth = locator<AuthWithFirebaseAuth>();
   FakeService _fakeService = locator<FakeService>();
   FireStoreAdd _fireStoreAdd = locator<FireStoreAdd>();
+  FirebaseStorageService _firebaseStorageService=locator<FirebaseStorageService>();
+  var photo;
 
   @override
   Future<Users> AuthAnonim() async {
@@ -102,4 +107,26 @@ class Repository implements AuthBase, DbBase {
       return _fireStoreAdd.updateUserName(newUserName, userId);
     }   
   }
+
+  @override
+  Future<String> savePhoto(String userId, String fileType, PickedFile photo) async{
+    if (_appMode == AppMode.DEBUG) {
+      return null;
+    } else if (_appMode == AppMode.REALESE) {
+    var newPhoto= await _firebaseStorageService.savePhoto(userId, fileType, photo);
+    return newPhoto;
+    }
+  }
+
+  @override
+  Future<bool> updatePhoto(String photoUrl, String userId)async {
+    if (_appMode == AppMode.DEBUG) {
+      return null;
+    } else if (_appMode == AppMode.REALESE) {
+      var newPhoto= await _fireStoreAdd.updatePhoto(photoUrl, userId);
+      return true;
+    }
+  }
+
+
 }

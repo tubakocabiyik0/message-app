@@ -14,8 +14,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   var userName = TextEditingController();
-  var newPhoto;
-  PickedFile _image;
+  PickedFile newPhoto;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +53,7 @@ class _ProfileState extends State<Profile> {
                      radius: 75,
                      backgroundColor: Colors.white,
                      backgroundImage: newPhoto ==null ? NetworkImage(_viewModel.users.profilPhoto) :
-                     Image.file(newPhoto) ,
+                     FileImage(File(newPhoto.path)) ,
                     )  )),
                   Padding(
                     padding: const EdgeInsets.only(top: 28.0),
@@ -85,9 +84,13 @@ class _ProfileState extends State<Profile> {
   save(BuildContext context) async {
     final _authProvider = Provider.of<AuthProvider>(context, listen: false);
     if (userName.text != _authProvider.users.userName) {
-      final _authProvider = Provider.of<AuthProvider>(context, listen: false);
       var updateResult = await _authProvider.updateUsername(
           _authProvider.users.UserId, userName.text);
+    }
+    if(newPhoto != null){
+     var url= await _authProvider.savePhoto(_authProvider.users.UserId, "photo", newPhoto);
+     await _authProvider.updatePhoto(_authProvider.users.UserId, url);
+
     }
   }
 
@@ -101,6 +104,7 @@ class _ProfileState extends State<Profile> {
             title: Text("Camera"),
             onTap: () {
               photoFromCamera();
+              Navigator.pop(context);
             },
           ),
           ListTile(
@@ -108,6 +112,7 @@ class _ProfileState extends State<Profile> {
             title: Text("Gallery"),
             onTap: () {
               photoFromGallery();
+              Navigator.pop(context);
             },
           )
         ],
@@ -117,7 +122,7 @@ class _ProfileState extends State<Profile> {
 
   void photoFromCamera()async {
    var image= await ImagePicker().getImage(source: ImageSource.camera);
-      setState(() {
+   setState(() {
         newPhoto=image;
       });
   }
