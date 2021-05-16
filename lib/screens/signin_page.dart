@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_message/common_widgets/alert_dialog.dart';
 import 'package:flutter_message/common_widgets/button_widget.dart';
 import 'package:flutter_message/viewmodel/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -76,6 +77,13 @@ class SignInPage extends StatelessWidget {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     try {
       await authProvider.AuthWithGoogle();
-    } catch (e) {}
+    } catch (e) {
+      return MyAlertDialog("ERROR", e.toString(), "ok",onpresses(context) ).show(context);
+    }
+  }
+
+  onpresses(BuildContext context) {
+     Navigator.pop(context);
+
   }
 }

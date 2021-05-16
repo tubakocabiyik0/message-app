@@ -7,12 +7,14 @@ class Textformfield extends StatelessWidget {
   final TextEditingController controller;
   final Widget icon;
   final errorText;
+  final String initialValue;
   Textformfield({
     this.icon,
     this.labelText,
     this.obscureText,
     this.controller,
     this.errorText,
+    this.initialValue,
   });
 
   @override
@@ -20,6 +22,7 @@ class Textformfield extends StatelessWidget {
     return
       TextFormField(
           decoration: InputDecoration(
+
             errorText: errorText,
             prefixIcon: icon,
             filled: true,

@@ -11,7 +11,7 @@ class ButtonWidgets extends StatelessWidget {
       {@required this.buttonText,
       @required this.pressed,
       @required this.color,
-      @required this.icon});
+      this.icon});
 
   @override
   Widget build(BuildContext context) {

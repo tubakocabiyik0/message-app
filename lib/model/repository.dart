@@ -30,7 +30,8 @@ class Repository implements AuthBase, DbBase {
     if (_appMode == AppMode.DEBUG) {
       return await _fakeService.CurrentUser();
     } else if (_appMode == AppMode.REALESE) {
-      return await _authWithFirebaseAuth.CurrentUser();
+      Users user =await _authWithFirebaseAuth.CurrentUser();
+      return takeUser(user.UserId);
     }
   }
 
@@ -60,7 +61,7 @@ class Repository implements AuthBase, DbBase {
       return null;
     } else if (_appMode == AppMode.REALESE) {
       Users _users = await _authWithFirebaseAuth.AuthWithMail(mail, pass);
-      _fireStoreAdd.saveUSer(_users);
+      await _fireStoreAdd.saveUSer(_users);
       return await _fireStoreAdd.takeUser(_users.UserId);
     }
   }
@@ -91,5 +92,14 @@ class Repository implements AuthBase, DbBase {
     } else if (_appMode == AppMode.REALESE) {
       return _fireStoreAdd.takeUser(userID);
     }
+  }
+
+  @override
+  Future<bool> updateUserName(String newUserName, String userId) {
+    if (_appMode == AppMode.DEBUG) {
+      return null;
+    } else if (_appMode == AppMode.REALESE) {
+      return _fireStoreAdd.updateUserName(newUserName, userId);
+    }   
   }
 }

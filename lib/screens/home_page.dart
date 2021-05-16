@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_message/common_widgets/alert_dialog.dart';
 import 'package:flutter_message/custom_navigation/tab_items.dart';
 
 import 'package:flutter_message/model/user.dart';
@@ -66,6 +67,16 @@ class _HomePageState extends State<HomePage> {
 
   signout(BuildContext context) async {
     final _authProvider = Provider.of<AuthProvider>(context, listen: false);
-    await _authProvider.signOut();
+    try{
+      await _authProvider.signOut();
+    }catch(E){
+      MyAlertDialog("error",E.toString(),"OK",press());
+    }
+
+
+  }
+
+  press() {
+    Navigator.pop(context);
   }
 }

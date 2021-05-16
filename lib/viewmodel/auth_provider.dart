@@ -124,4 +124,12 @@ class AuthProvider with ChangeNotifier implements AuthBase {
       }
     }
   }
+
+  Future<bool> updateUsername(String userId,String username) async {
+
+
+       return await _authRepository.updateUserName(username, userId);
+
+  }
+
 }

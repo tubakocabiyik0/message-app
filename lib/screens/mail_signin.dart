@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_message/common_widgets/alert_dialog.dart';
 import 'package:flutter_message/common_widgets/button_widget.dart';
 import 'package:flutter_message/common_widgets/textformfield.dart';
 import 'package:flutter_message/screens/home_page.dart';
@@ -91,7 +92,7 @@ class _SigninWithMailState extends State<SigninWithMail> {
       await authProvider.LoginWithMail(
           mailController.text, passwordController.text);
     } catch (e) {
-      print("hata widgetda");
+      MyAlertDialog("error",e.toString(),"ok",pressed()).show(context);;
     }
   }
 
@@ -100,6 +101,12 @@ class _SigninWithMailState extends State<SigninWithMail> {
     try {
       await authProvider.AuthWithMail(
           mailController.text, passwordController.text);
-    } catch (e) {}
+    } catch (e) {
+      MyAlertDialog("error",e.toString(),"ok",pressed()).show(context);;
+    }
+  }
+
+  pressed() {
+    Navigator.pop(context);
   }
 }
