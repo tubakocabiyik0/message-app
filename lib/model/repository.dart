@@ -128,5 +128,16 @@ class Repository implements AuthBase, DbBase , StorageBase {
     }
   }
 
+  @override
+  Future<List<Users>> getAllUsers() async{
+    if (_appMode == AppMode.DEBUG) {
+      return null;
+    } else if (_appMode == AppMode.REALESE) {
+      var userList= await _fireStoreAdd.getAllUsers();
+      return userList;
+    }
+
+  }
+
 
 }

@@ -4,6 +4,7 @@ import 'package:flutter_message/model/user.dart';
 import 'package:flutter_message/service/db_base.dart';
 
 class FireStoreAdd implements DbBase {
+
   FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   @override
@@ -52,6 +53,28 @@ class FireStoreAdd implements DbBase {
   @override
   Future<bool> updatePhoto(String photoUrl,String userId) async{
     await _firebaseFirestore.collection("users").doc(userId).update({'profilPhoto': photoUrl});
+
+  }
+
+  @override
+  Future<List<Users>> getAllUsers() async{
+    QuerySnapshot querySnapshot=await _firebaseFirestore.collection("users").get();
+    /*for(DocumentSnapshot documentSnapshot in querySnapshot.docs){
+      print(documentSnapshot.data().toString());
+
+    }*/
+
+    List list= querySnapshot.docs.map((document) =>Users.fromMap(document.data())).toList();
+    return list;
+
+
+  }
+
+  @override
+  Stream getMessages(String currentUSerId, String talkUserId) {
+  
+    var snapshot= _firebaseFirestore.collection("chats").doc(currentUSerId+"--"+talkUserId).collection("messages").orderBy("date").snapshots();
+    return snapshot;
 
   }
 

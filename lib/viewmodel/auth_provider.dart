@@ -143,4 +143,12 @@ class AuthProvider with ChangeNotifier implements AuthBase, StorageBase {
      await _authRepository.updatePhoto(url, userId);
      return true;
   }
+
+  Future<List<Users>> getAllUsers() async{
+     var usersList=await _authRepository.getAllUsers();
+    return usersList;
+ 
+
+}
+
 }
