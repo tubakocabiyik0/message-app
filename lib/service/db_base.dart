@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_message/model/message.dart';
 import 'package:flutter_message/model/user.dart';
 
 abstract class DbBase {
@@ -9,4 +10,5 @@ abstract class DbBase {
   Future<bool> updatePhoto(String photoUrl,String userId);
   Future<List<Users>> getAllUsers();
   Stream  getMessages(String currentUSerId,String talkUserId);
+  Future<bool> saveMessage(Message message) ;
 }

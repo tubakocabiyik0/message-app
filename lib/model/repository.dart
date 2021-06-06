@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_message/locator.dart';
+import 'package:flutter_message/model/message.dart';
 import 'package:flutter_message/model/user.dart';
 import 'package:flutter_message/service/AuthwithFirebase.dart';
 import 'package:flutter_message/service/auth_base.dart';
@@ -146,6 +147,16 @@ class Repository implements AuthBase, DbBase , StorageBase {
       return null;
     } else if (_appMode == AppMode.REALESE) {
            return _fireStoreAdd.getMessages(currentUSerId, talkUserId);
+
+    }
+  }
+
+  @override
+  Future<bool> saveMessage(Message message) {
+    if (_appMode == AppMode.DEBUG) {
+      return null;
+    } else if (_appMode == AppMode.REALESE) {
+      return _fireStoreAdd.saveMessage(message);
 
     }
   }

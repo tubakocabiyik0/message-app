@@ -81,5 +81,13 @@ class FireStoreAdd implements DbBase {
 
   }
 
+  @override
+  Future<bool> saveMessage(Message message) async{
+     var messageId = _firebaseFirestore.collection("messages").doc().id;
+
+
+
+  }
+
 
 }

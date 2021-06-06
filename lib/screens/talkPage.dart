@@ -49,7 +49,8 @@ class _TalkPageState extends State<TalkPage> {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                return listView(messages.data, context, currentUserId, talkUserId);
+                return listView(
+                    messages.data, context, currentUserId, talkUserId);
               }
             },
           )),
@@ -72,7 +73,15 @@ class _TalkPageState extends State<TalkPage> {
                       size: 35,
                       color: Colors.white,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      if (messageController.text.trim().length > 0) {
+                        Message saveMessage = new Message(
+                            sendMessage: currentUserId.text,
+                            fromMe: true,
+                            takeMessage: talkUserId,
+                            message: messageController.text);
+                      }
+                    },
                   ),
                 )
               ],

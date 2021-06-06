@@ -1,39 +1,36 @@
 import 'dart:core';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Message {
-  String _sendMessage;
-  bool _fromMe;
-  String _takeMessage;
-  String _message;
-  DateTime _date;
+  String sendMessage;
+  bool fromMe;
+  String takeMessage;
+  String message;
+  DateTime date;
 
-  Message(this._sendMessage, this._fromMe, this._takeMessage, this._message,
-      this._date);
-
-  DateTime get date => _date;
-
-  String get message => _message;
-
-  String get takeMessage => _takeMessage;
-
-  bool get fromMe => _fromMe;
-
-  String get sendMessage => _sendMessage;
+  Message(
+      {this.sendMessage,
+      this.fromMe,
+      this.takeMessage,
+      this.message,
+      this.date});
 
   Map<String, dynamic> toMap() {
     return {
-      "sendMessage": _sendMessage,
-      "fromMe": _fromMe,
-      "takeMessage": _takeMessage,
-      "message": _message,
-      "date": _date,
+      "sendMessage": sendMessage,
+      "fromMe": fromMe,
+      "takeMessage": takeMessage,
+      "message": message,
+      // date boşsa firebase'in date ini kullanır
+      "date": date ?? FieldValue.serverTimestamp(),
     };
   }
 
   Message.fromMap(Map<String, dynamic> map)
-      : _sendMessage = map['sendMessage'],
-        _fromMe = map['fromMe'],
-        _takeMessage = map['takeMessage'],
-        _message = map['message'],
-        _date = map['date'];
+      : sendMessage = map['sendMessage'],
+        fromMe = map['fromMe'],
+        takeMessage = map['takeMessage'],
+        message = map['message'],
+        date = map['date'];
 }

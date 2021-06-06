@@ -156,5 +156,17 @@ class AuthProvider with ChangeNotifier implements AuthBase, StorageBase {
     return messageList;
 
   }
+  Future<bool> saveMessage (Message message) async{
+   try{
+     await _authRepository.saveMessage(message);
+     return Future.value(true);
+   }finally{
+
+   }
+
+
+
+
+  }
 
 }
