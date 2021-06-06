@@ -41,11 +41,12 @@ class Repository implements AuthBase, DbBase , StorageBase {
   }
 
   @override
-  Future<bool> signOut() {
+  Future<bool> signOut() async  {
     if (_appMode == AppMode.DEBUG) {
       return _fakeService.signOut();
     } else if (_appMode == AppMode.REALESE) {
-      return _authWithFirebaseAuth.signOut();
+       await _authWithFirebaseAuth.signOut();
+       return true;
     }
   }
 
@@ -137,6 +138,16 @@ class Repository implements AuthBase, DbBase , StorageBase {
       return userList;
     }
 
+  }
+
+  @override
+  Stream getMessages(String currentUSerId, String talkUserId) {
+    if (_appMode == AppMode.DEBUG) {
+      return null;
+    } else if (_appMode == AppMode.REALESE) {
+           return _fireStoreAdd.getMessages(currentUSerId, talkUserId);
+
+    }
   }
 
 

@@ -14,6 +14,7 @@ class LandingPage extends StatelessWidget {
 
     if (authProvider.viewState == ViewState.Idle) {
       if (authProvider.users == null) {
+        print("buraya geldi");
         return SignInPage();
       } else if(authProvider.users !=null) {
          print(authProvider.CurrentUser());

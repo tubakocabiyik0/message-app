@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_message/model/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'dart:io';
 import 'auth_base.dart';
 
 class AuthWithFirebaseAuth implements AuthBase {
@@ -12,6 +11,7 @@ class AuthWithFirebaseAuth implements AuthBase {
     try {
       await _firebaseAuth.signOut();
       return Future.value(true);
+
     } catch (e) {
       return Future.value(false);
     }

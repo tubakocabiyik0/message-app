@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_message/model/message.dart';
 import 'package:flutter_message/model/repository.dart';
 import 'package:flutter_message/model/user.dart';
 import 'package:flutter_message/service/auth_base.dart';
@@ -64,9 +65,11 @@ class AuthProvider with ChangeNotifier implements AuthBase, StorageBase {
       viewState = ViewState.Busy;
       final _googleSign = GoogleSignIn();
       await _googleSign.signOut();
-      await _authRepository.signOut();
+      bool result=await _authRepository.signOut();
       _users = null;
-    } catch (e) {} finally {
+      print("user null oldu");
+      return result;
+    } finally {
       viewState = ViewState.Idle;
     }
   }
@@ -147,8 +150,11 @@ class AuthProvider with ChangeNotifier implements AuthBase, StorageBase {
   Future<List<Users>> getAllUsers() async{
      var usersList=await _authRepository.getAllUsers();
     return usersList;
- 
-
 }
+  Stream<List<Message>> getMessages (String currentUSerId,String talkUserId) {
+    var messageList= _authRepository.getMessages(currentUSerId, talkUserId);
+    return messageList;
+
+  }
 
 }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_message/model/message.dart';
 import 'package:flutter_message/model/user.dart';
 import 'package:flutter_message/service/db_base.dart';
 
@@ -71,10 +72,12 @@ class FireStoreAdd implements DbBase {
   }
 
   @override
-  Stream getMessages(String currentUSerId, String talkUserId) {
+  Stream<List<Message>> getMessages(String currentUSerId, String talkUserId) {
   
     var snapshot= _firebaseFirestore.collection("chats").doc(currentUSerId+"--"+talkUserId).collection("messages").orderBy("date").snapshots();
-    return snapshot;
+    //snapshot'da collection'dan aldığımız verileri message classından frommap function'ını kullanarak message türüne dönüştürdük ve to list diyerek listeledik
+    // iki tane map işlemi yaptık
+    return snapshot.map((messages)=>messages.docs.map((docs) => Message.fromMap(docs.data())).toList());
 
   }
 
