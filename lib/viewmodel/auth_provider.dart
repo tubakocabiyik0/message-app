@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_message/model/Talks.dart';
 import 'package:flutter_message/model/message.dart';
 import 'package:flutter_message/model/repository.dart';
 import 'package:flutter_message/model/user.dart';
@@ -151,8 +152,8 @@ class AuthProvider with ChangeNotifier implements AuthBase, StorageBase {
      var usersList=await _authRepository.getAllUsers();
     return usersList;
 }
-  Stream<List<Message>> getMessages (String currentUSerId,String talkUserId) {
-    var messageList= _authRepository.getMessages(currentUSerId, talkUserId);
+  Stream<List<Message>> getMessages (String currentUSerId,String talkUserId)  {
+    var messageList=  _authRepository.getMessages(currentUSerId, talkUserId);
     return messageList;
 
   }
@@ -163,10 +164,13 @@ class AuthProvider with ChangeNotifier implements AuthBase, StorageBase {
    }finally{
 
    }
-
-
-
-
   }
+  Future<List<Talks>> getAllTalks (String userId) async{
+    try{
+      return await _authRepository.getAllTalks(userId);
+    }finally{
+    }
+
+}
 
 }

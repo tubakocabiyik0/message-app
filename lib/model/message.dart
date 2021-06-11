@@ -7,7 +7,7 @@ class Message {
   bool fromMe;
   String takeMessage;
   String message;
-  DateTime date;
+  Timestamp date;
 
   Message(
       {this.sendMessage,

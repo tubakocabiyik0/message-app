@@ -16,7 +16,9 @@ class MyTabNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(tabBar: CupertinoTabBar(items: [
       _bottomNavigationBarItem(TabItems.users),
-      _bottomNavigationBarItem(TabItems.profile)
+      _bottomNavigationBarItem(TabItems.talks),
+      _bottomNavigationBarItem(TabItems.profile),
+
 
     ],
     onTap: (index)=>onselectedTab(TabItems.values[index]),

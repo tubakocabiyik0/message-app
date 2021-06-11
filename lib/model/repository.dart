@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_message/locator.dart';
+import 'package:flutter_message/model/Talks.dart';
 import 'package:flutter_message/model/message.dart';
 import 'package:flutter_message/model/user.dart';
 import 'package:flutter_message/service/AuthwithFirebase.dart';
@@ -142,7 +143,7 @@ class Repository implements AuthBase, DbBase , StorageBase {
   }
 
   @override
-  Stream getMessages(String currentUSerId, String talkUserId) {
+  Stream<List<Message>> getMessages(String currentUSerId, String talkUserId) {
     if (_appMode == AppMode.DEBUG) {
       return null;
     } else if (_appMode == AppMode.REALESE) {
@@ -160,6 +161,18 @@ class Repository implements AuthBase, DbBase , StorageBase {
 
     }
   }
+
+  @override
+  Future<List<Talks>> getAllTalks(String userId) async{
+    if (_appMode == AppMode.DEBUG) {
+      return null;
+    } else if (_appMode == AppMode.REALESE) {
+      return await _fireStoreAdd.getAllTalks(userId);
+
+    }
+  }
+
+
 
 
 }

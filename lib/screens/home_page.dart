@@ -5,6 +5,7 @@ import 'package:flutter_message/custom_navigation/tab_items.dart';
 
 import 'package:flutter_message/model/user.dart';
 import 'package:flutter_message/screens/profile_page.dart';
+import 'package:flutter_message/screens/talks_page.dart';
 import 'package:flutter_message/screens/users_page.dart';
 
 import 'package:flutter_message/viewmodel/auth_provider.dart';
@@ -24,41 +25,39 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TabItems _currentTab = TabItems.users;
 
+  Map<TabItems, GlobalKey<NavigatorState>> _globalKeys = {
+    TabItems.users: GlobalKey<NavigatorState>(),
+    TabItems.profile: GlobalKey<NavigatorState>(),
+    TabItems.talks: GlobalKey<NavigatorState>(),
+  };
 
-
-  Map<TabItems, GlobalKey<NavigatorState>> _globalKeys= {
-
-  TabItems.users: GlobalKey<NavigatorState>(),
-  TabItems.profile: GlobalKey<NavigatorState>(),
-
-};
   Map<TabItems, Widget> _currentPage() {
     return {
       TabItems.users: AllUsers(),
       TabItems.profile: Profile(),
+      TabItems.talks: TalksPage(),
     };
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: WillPopScope(
-        onWillPop: () async => !await _globalKeys[_currentTab].currentState.maybePop(),
+        onWillPop: () async =>
+            !await _globalKeys[_currentTab].currentState.maybePop(),
         child: MyTabNavigation(
             getGlobalKey: _globalKeys,
             getPage: _currentPage(),
             onselectedTab: (selectedTab) {
-              if(selectedTab==_currentTab){
-                _globalKeys[_currentTab].currentState.popUntil((route) => route.isFirst);
-              }else{
+              if (selectedTab == _currentTab) {
+                _globalKeys[_currentTab]
+                    .currentState
+                    .popUntil((route) => route.isFirst);
+              } else {
                 setState(() {
                   _currentTab = selectedTab;
                 });
               }
-
-
-
             },
             currentTab: _currentTab),
       ),
@@ -67,16 +66,15 @@ class _HomePageState extends State<HomePage> {
 
   signout(BuildContext context) async {
     final _authProvider = Provider.of<AuthProvider>(context, listen: false);
-    try{
+    try {
       await _authProvider.signOut();
-    }catch(E){
-      MyAlertDialog("error",E.toString(),"OK",press());
+    } catch (E) {
+      MyAlertDialog("error", E.toString(), "OK", press());
     }
-
-
   }
 
   press() {
     Navigator.pop(context);
   }
 }
+
