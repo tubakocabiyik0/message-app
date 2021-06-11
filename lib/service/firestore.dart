@@ -7,7 +7,7 @@ import 'package:flutter_message/service/db_base.dart';
 
 class FireStoreAdd implements DbBase {
   FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-
+  List<Users> allUserList=[];
   @override
   Future<bool> saveUSer(Users user) async {
     Map _userMap = user.tomap();
@@ -74,10 +74,10 @@ class FireStoreAdd implements DbBase {
 
     }*/
 
-    List list = querySnapshot.docs
+    allUserList = querySnapshot.docs
         .map((document) => Users.fromMap(document.data()))
         .toList();
-    return list;
+    return allUserList;
   }
 
   @override

@@ -40,7 +40,7 @@ class Users {
         createdAt=(map['createdAt']).toDate(),
         level=map['level'];
 
-
+  Users.idAndPhoto({@required this.UserId, @required this.profilPhoto, @required this.userName});
   String random() {
     int random = Random().nextInt(99999);
     return random.toString();

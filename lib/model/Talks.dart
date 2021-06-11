@@ -8,6 +8,8 @@ class Talks {
   final Timestamp createDate;
   final String lastMessage;
   final Timestamp seenDate;
+  String profilePhoto;
+  String userName;
 
   Talks(
       {this.send,

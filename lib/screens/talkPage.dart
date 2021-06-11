@@ -32,6 +32,7 @@ class _TalkPageState extends State<TalkPage> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: CircleAvatar(backgroundImage: NetworkImage(widget.talkUser.profilPhoto)),
         title: Text(widget.talkUser.userName),
       ),
       body: talkPage(context),
@@ -83,7 +84,7 @@ class _TalkPageState extends State<TalkPage> {
                       color: Colors.white,
                     ),
                     onPressed: () async {
-                      // provider = Provider.of<AuthProvider>(context);
+
                       if (messageController.text.trim().length > 0) {
                         message = new Message(
                             sendMessage: currentUserId,
@@ -121,6 +122,7 @@ class _TalkPageState extends State<TalkPage> {
     } catch (e) {}
 
     var fromMe = message.fromMe;
+
     if (fromMe) {
       return Padding(
         padding: EdgeInsets.all(8),

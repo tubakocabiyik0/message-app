@@ -22,7 +22,7 @@ class Repository implements AuthBase, DbBase , StorageBase {
   FireStoreAdd _fireStoreAdd = locator<FireStoreAdd>();
   FirebaseStorageService _firebaseStorageService=locator<FirebaseStorageService>();
   var photo;
-
+  List<Users> allUsers=[];
   @override
   Future<Users> AuthAnonim() async {
     if (_appMode == AppMode.DEBUG) {
@@ -136,8 +136,8 @@ class Repository implements AuthBase, DbBase , StorageBase {
     if (_appMode == AppMode.DEBUG) {
       return null;
     } else if (_appMode == AppMode.REALESE) {
-      var userList= await _fireStoreAdd.getAllUsers();
-      return userList;
+      allUsers= await _fireStoreAdd.getAllUsers();
+      return allUsers;
     }
 
   }
@@ -167,11 +167,34 @@ class Repository implements AuthBase, DbBase , StorageBase {
     if (_appMode == AppMode.DEBUG) {
       return null;
     } else if (_appMode == AppMode.REALESE) {
-      return await _fireStoreAdd.getAllTalks(userId);
+      var allTalks=await _fireStoreAdd.getAllTalks(userId);
+      //bu kısmı her sefer internete gitmemek için yaptık
+      for(var talks in allTalks){
+        var receiverUser= findUser(talks.receiver);
+        if(receiverUser!=null){
+          talks.userName= receiverUser.userName;
+          talks.profilePhoto=receiverUser.profilPhoto;
+        }else{
+          var user = await _fireStoreAdd.takeUser(receiverUser.UserId);
+          talks.userName= user.userName;
+          talks.profilePhoto=user.profilPhoto;
+        }
+
+      }
+
+
+      return allTalks;
 
     }
   }
+  Users findUser(String UserId){
+    for(int i=0;i<allUsers.length;i++){
+      if(allUsers[i].UserId==UserId){
+        return allUsers[i];
+      }
+    }
 
+  }
 
 
 
