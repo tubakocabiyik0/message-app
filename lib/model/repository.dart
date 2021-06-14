@@ -196,6 +196,23 @@ class Repository implements AuthBase, DbBase , StorageBase {
 
   }
 
+  @override
+  Future<List<Users>> getAllUsersWithPagination(Users lastUser, int userCount) {
+    if (_appMode == AppMode.DEBUG) {
+      return null;
+    } else if (_appMode == AppMode.REALESE) {
+      return _fireStoreAdd.getAllUsersWithPagination(lastUser, userCount);
+
+    }
+
+  }
+
+  @override
+  Future<DateTime> getTime(String userId) {
+    // TODO: implement getTime
+    throw UnimplementedError();
+  }
+
 
 
 }

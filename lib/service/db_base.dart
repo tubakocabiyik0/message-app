@@ -13,4 +13,6 @@ abstract class DbBase {
   Stream <List<Message>> getMessages(String currentUSerId,String talkUserId);
   Future<bool> saveMessage(Message message) ;
   Future<List<Talks>> getAllTalks(String userId);
+  Future<List<Users>> getAllUsersWithPagination(Users lastUser,int userCount);
+  Future<DateTime> getTime(String userId);
 }

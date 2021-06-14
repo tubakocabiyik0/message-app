@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_message/model/Talks.dart';
 import 'package:flutter_message/model/user.dart';
 import 'package:flutter_message/screens/talkPage.dart';
 import 'package:flutter_message/viewmodel/auth_provider.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class TalksPage extends StatefulWidget {
@@ -53,6 +55,15 @@ class _TalksPageState extends State<TalksPage> {
                       },
                       child: ListTile(
                         title: Text(result.data[index].userName),
+                        trailing: Padding(
+                          padding: const EdgeInsets.only(top:8.0),
+                          child: Column(
+                            children: [
+                              Text(showDate(result.data[index].createDate)),
+                              Text(showTime(result.data[index].createDate))
+                            ],
+                          ),
+                        ),
                         leading: CircleAvatar(
                           backgroundImage:
                               NetworkImage(result.data[index].profilePhoto),
@@ -70,7 +81,16 @@ class _TalksPageState extends State<TalksPage> {
       ),
     );
   }
-
+  showTime(Timestamp date) {
+    var _formatter = DateFormat.jm();
+    var _formatedDate = _formatter.format(date.toDate());
+    return _formatedDate;
+  }
+  showDate(Timestamp date) {
+    var _formatter = DateFormat.yMd();
+    var _formatedDate = _formatter.format(date.toDate());
+    return _formatedDate;
+  }
   Future<Null> freshPage() async {
     setState(() {});
     Future.delayed(Duration(seconds: 1));

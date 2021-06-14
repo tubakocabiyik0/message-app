@@ -173,4 +173,9 @@ class AuthProvider with ChangeNotifier implements AuthBase, StorageBase {
 
 }
 
+  Future<List<Users>> getAllUsersWithPagination(Users lastUser,int userCount)async {    try{
+    return await _authRepository.getAllUsersWithPagination(lastUser,userCount);
+  }finally{
+  }}
+
 }

@@ -158,4 +158,43 @@ class FireStoreAdd implements DbBase {
     }
     return allTalks;
   }
-}
+
+  @override
+  Future<List<Users>> getAllUsersWithPagination(Users lastUser, int userCount) async{
+    QuerySnapshot querySnapshot;
+    // hasmore burada kontrol edilebilir
+    List<Users> allUsers=[];
+    if (lastUser == null) {
+      querySnapshot =
+          await FirebaseFirestore.instance.collection("users").orderBy("userName")
+          .limit(userCount)
+          .get();
+    } else {
+      querySnapshot =
+          await FirebaseFirestore.instance.collection("users").orderBy("userName")
+          .startAfter([lastUser.userName]).limit(userCount)
+          .get();
+    }
+    /* if (querySnapshot.docs.length < userCount) {
+      _hasMore = false;
+    }*/
+
+    for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+
+      allUsers.add(Users.fromMap(documentSnapshot.data()));
+    }
+    return allUsers;
+  }
+
+  @override
+  Future<DateTime> getTime(String userId)  async{
+    await _firebaseFirestore.collection("server").doc(userId).set({
+      "time":FieldValue.serverTimestamp(),
+    });
+    var documentSnapshot =await _firebaseFirestore.collection("server").doc(userId).get();
+    Timestamp time= documentSnapshot.data()["time"];
+
+    return time.toDate();
+  }
+  }
+
