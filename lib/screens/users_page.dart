@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_message/model/user.dart';
 import 'package:flutter_message/screens/talkPage.dart';
+import 'package:flutter_message/viewmodel/allUsers_provider.dart';
 import 'package:flutter_message/viewmodel/auth_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,6 @@ class AllUsers extends StatefulWidget {
 }
 
 class _AllUsersState extends State<AllUsers> {
-  List<Users> _allUsers = [];
   bool _isLoading = false;
   bool _hasMore = true;
   int _userCount = 10;
@@ -34,8 +34,8 @@ class _AllUsersState extends State<AllUsers> {
 
   @override
   Widget build(BuildContext context) {
-    var _provider=Provider.of<AuthProvider>(context);
-
+    final _usersProvider=Provider.of<AllUsersProvider>(context);
+    // getAllUser();
     return Scaffold(
         appBar: AppBar(
       backgroundColor: Colors.purple.shade300,
@@ -45,14 +45,49 @@ class _AllUsersState extends State<AllUsers> {
           }, child: Text("More user"))
           ],
     ),
-      body: Column(
-        children: [
-          Expanded(child: _usersList()),
+      body: Consumer<AllUsersProvider>(builder: (context,model,child){
+        if(model.state==AllUsersViewState.Busy){
+           return Center(child: CircularProgressIndicator(),);
 
-          _isLoading ? CircularProgressIndicator() : Container(),
-        ],
-      )
-
+        }
+        else if(model.state==AllUsersViewState.Loaded){
+          return Container();
+        }else{
+          return ListView.builder (
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              controller: _scrollController,
+              itemCount: model.userList.length+1,
+              itemBuilder: (context, index) {
+                print("lenght"+model.userList.length.toString());
+                if(index==model.userList.length) {
+                  return  newUsersAdding();
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: ListTile(
+                    onTap: (){
+                      Navigator.of(context, rootNavigator: true).push(
+                          MaterialPageRoute(
+                              builder: (context) => TalkPage(
+                                  currentUser:_provider.users,
+                                  talkUser: model.userList[index])));
+                    },
+                    title: Padding(
+                      padding: const EdgeInsets.only(top: 25.0),
+                      child: Text(
+                        model.userList[index].userName, style: TextStyle(fontSize: 20),),
+                    ),
+                    leading: Padding(
+                      padding: const EdgeInsets.only(top: 25.0),
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(model.userList[index].profilPhoto),),
+                    ),
+                  ),
+                );
+              });
+        }
+      },)
 
     );
   }
@@ -81,10 +116,13 @@ class _AllUsersState extends State<AllUsers> {
   }
 
   getAllUser() async {
-
     final _provider = Provider.of<AuthProvider>(context,listen: false);
+    final _providerUser = Provider.of<AllUsersProvider>(context,listen: false);
     await _provider.getAllUsers();
-    setState(() {
+    await _providerUser.getNewUsers();
+
+
+    /*setState(() {
       _isLoading = true;
     });
     List<Users> usersList = await _provider.getAllUsersWithPagination(_lastUser,_userCount);
@@ -105,11 +143,11 @@ class _AllUsersState extends State<AllUsers> {
         _isLoading = false;
       });
     }
-    return usersList;
+    return usersList;*/
   }
   _usersList() {
     final _provider = Provider.of<AuthProvider>(context,listen: false);
-    return ListView.builder (
+ /*   return ListView.builder (
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
         controller: _scrollController,
@@ -141,7 +179,7 @@ class _AllUsersState extends State<AllUsers> {
               ),
             ),
           );
-        });
+        });*/
   }
 
 

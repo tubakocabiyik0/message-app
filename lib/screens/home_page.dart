@@ -7,6 +7,7 @@ import 'package:flutter_message/model/user.dart';
 import 'package:flutter_message/screens/profile_page.dart';
 import 'package:flutter_message/screens/talks_page.dart';
 import 'package:flutter_message/screens/users_page.dart';
+import 'package:flutter_message/viewmodel/allUsers_provider.dart';
 
 import 'package:flutter_message/viewmodel/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +34,8 @@ class _HomePageState extends State<HomePage> {
 
   Map<TabItems, Widget> _currentPage() {
     return {
-      TabItems.users: AllUsers(),
+      TabItems.users:ChangeNotifierProvider(create: (BuildContext context) =>AllUsersProvider()
+      ,child: AllUsers(),),
       TabItems.profile: Profile(),
       TabItems.talks: TalksPage(),
     };
